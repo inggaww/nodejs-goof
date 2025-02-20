@@ -92,19 +92,19 @@ pipeline {
 				archiveArtifacts artifacts: 'trivy-scan-dockerfile-report.json'
 			}
 		}
-		stage('Build Docker Image and Push to Docker Registry') {
-			agent {
-				docker {
-					image 'docker:dind'
-					args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-				}
-			}
-			steps {
-				sh 'docker build -t inggaww/nodejsgoof:0.1 .'
-				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-				sh 'docker push inggaww/nodejsgoof:0.1'
-			}
-		}
+		// stage('Build Docker Image and Push to Docker Registry') {
+		//	agent {
+		//		docker {
+		//			image 'docker:dind'
+		//			args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+		//		}
+		//	}
+		//	steps {
+		//		sh 'docker build -t inggaww/nodejsgoof:0.1 .'
+		//		sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+		//		sh 'docker push inggaww/nodejsgoof:0.1'
+		//	}
+		// }
 		
 		stage('Deploy Docker Image') {
 			agent {
