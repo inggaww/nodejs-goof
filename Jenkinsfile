@@ -1,9 +1,9 @@
 pipeline {
    agent none
    environment {
-      DOCKERHUB_CREDENTIALS = credentials('DockerLogin')
+    DOCKERHUB_CREDENTIALS = credentials('DockerLogin')
 	SNYK_CREDENTIALS = credentials('SnykToken')
-	  SONARQUBE_CREDENTIALS = credentials('SonarToken')
+	SONARQUBE_CREDENTIALS = credentials('SonarToken')
 	}
 
    stages {
@@ -38,7 +38,7 @@ pipeline {
 			agent {
 					docker {
 							image 'snyk/snyk:node'
-							args '-u root --network host --env SNYK_TOKEN=$SNYK-CREDENTIALS-PSW --entrypoint='
+							args '-u root --network host --env SNYK_TOKEN=$SNYK_CREDENTIALS-PSW --entrypoint='
 							}
 				}
 			steps{
@@ -126,11 +126,12 @@ pipeline {
 		stage('Build Docker Image and Push to Docker Registry') {
 			agent {
 					docker {
-							image 'docker:dind'
-							args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+							image 'docker'
+							args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
 							}
 			}
 			steps {
+					sh 'service docker start || true'
 					sh 'docker build -t inggaww/nodejsgoof:0.1 .'
 					sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 					sh 'docker push inggaww/nodejsgoof:0.1'
