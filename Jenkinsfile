@@ -7,22 +7,22 @@ pipeline {
 	}
 
    stages {
-		// stage('secret scanning with trufflehog') {
-		// 	agent {
-		// 			docker {
-		// 					image 'trufflesecurity/trufflehog:latest'
-		// 					args '--entrypoint='
-		// 				}
-		// 			}
+		 stage('secret scanning with trufflehog') {
+			agent {
+					docker {
+							image 'trufflesecurity/trufflehog:latest'
+							args '--entrypoint='
+						}
+					}
 
-		// 	steps{
-		// 			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-		// 					sh 'trufflehog filesystem . --exclude-paths trufflehog-excluded-paths.txt --fail --json --no-update > trufflehog-scan-result.json'
-		// 				}
-		// 				sh 'cat trufflehog-scan-result.json'
-		// 				archiveArtifacts artifacts: 'trufflehog-scan-result.json'
-		// 			}
-		// 	}
+			steps{
+					catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+							sh 'trufflehog filesystem . --exclude-paths trufflehog-excluded-paths.txt --fail --json --no-update > trufflehog-scan-result.json'
+						}
+						sh 'cat trufflehog-scan-result.json'
+						archiveArtifacts artifacts: 'trufflehog-scan-result.json'
+					}
+			}
 		stage('Build') {
 			agent {
 					docker {
@@ -202,6 +202,7 @@ pipeline {
 		// 	}
 		// }
 	}
+<<<<<<< HEAD
 	post{
 		always{
 			node('build-in') {
@@ -210,3 +211,6 @@ pipeline {
 		}
 	}
 }
+=======
+}
+>>>>>>> bc03e4017d7a2850cf6131959c3a272d25660148
