@@ -202,4 +202,11 @@ pipeline {
 		// 	}
 		// }
 	}
+	post{
+		always{
+			node('build-in') {
+				sh 'curl -X POST http://192.168.1.10:8080/api/v2/import-scan/ -H "Authorization: Token d3e07b49d0307a2c54ceab7a18ef6c991c2253dc" -F "scan_type=Trufflehog Scan" -F "file-@./trufflehog-scan-result.json;type=application/json" -F "engagement=2"'
+			}
+		}
+	}
 }
